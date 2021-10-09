@@ -3,6 +3,7 @@ const cors = require('cors');
 const morgan = require('morgan');
 const path = require('path');
 const routes = require('./routes');
+const config = require('./config');
 
 const server = express();
 
