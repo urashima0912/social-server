@@ -1,5 +1,8 @@
 const models = require('../models');
 const values = require('../values');
+// const fs = require('fs');
+const fs = require('fs/promises');
+const path = require('path');
 
 const upload = async (req, res) => {
   try {
@@ -43,16 +46,64 @@ const details = (req, res) => {
   return res.json('details');
 };
 
-const remove = (req, res) => {
-  return res.json('remove');
+const remove = async (req, res) => {
+  try {
+    const { postId } = req.body;
+
+    const post = await models.post.findById(postId);
+    if (!post) {
+      return res.json({ error: 'Post no existe' });
+    }
+
+    const imageSplit = post.image.split('/');
+    const fileName = imageSplit[imageSplit.length - 1];
+    const imagePath = path.resolve(
+      `./src/statics/${values.imageFolder}/` + fileName
+    );
+
+    await fs.unlink(imagePath);
+
+    await models.comment.deleteMany({ post });
+    const data = await models.post.findByIdAndRemove(postId);
+
+    return res.json({ data });
+  } catch (err) {
+    return res.json({ error: err.message });
+  }
 };
 
-const like = (req, res) => {
-  return res.json('like');
+const like = async (req, res) => {
+  try {
+    const { postId } = req.body;
+
+    const post = await models.post.findById(postId);
+    if (!post) {
+      return res.json({ error: 'Post no encontrado' });
+    }
+    post.likes += 1;
+    await post.save();
+
+    return res.json({ post });
+  } catch (err) {
+    return res.json({ err: err.message });
+  }
 };
 
-const view = (req, res) => {
-  return res.json('view');
+const view = async (req, res) => {
+  try {
+    const { postId } = req.body;
+    const post = await models.post.findByIdAndUpdate(
+      postId,
+      {
+        $inc: { views: 1 },
+      },
+      { new: true }
+    );
+
+    return res.json({ post });
+  } catch (err) {
+    return res.json({ err: err.message });
+  }
 };
 
 module.exports = {
