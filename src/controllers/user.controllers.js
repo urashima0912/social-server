@@ -2,6 +2,7 @@ const models = require('../models');
 const utils = require('../utils');
 const jwt = require('jsonwebtoken');
 const config = require('../config');
+const values = require('../values');
 
 const signIn = async (req, res) => {
   try {
@@ -28,12 +29,12 @@ const signIn = async (req, res) => {
 const signUp = async (req, res) => {
   try {
     const { email, password } = req.body;
-    const hostname = 'http://localhost:4500';
+    const hostname = 'http://localhost:4500/';
     const hash = await utils.bcrypt.encrypt(password);
     const file = req.file;
 
     const user = {
-      avatar: hostname + file.filename,
+      avatar: hostname + values.avatarFolder + '/' + file.filename,
       email,
       password: hash,
     };
