@@ -13,7 +13,7 @@ const upload = async (req, res) => {
       return res.json({ error: 'Usuario no existe' });
     }
 
-    const hostname = 'http://localhost:4500/';
+    const hostname = process.env.HOSTNAME;
     const file = req.file;
     const filename = hostname + values.imageFolder + '/' + file.filename;
 
