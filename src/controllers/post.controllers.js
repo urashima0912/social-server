@@ -46,9 +46,9 @@ const stast = async (req, res) => {
     const images = await models.post.countDocuments();
     const comments = (await models.comment.find()).length;
 
-    const posts = await models.post.countDocuments();
+    const countPosts = await models.post.countDocuments();
     let views = 0;
-    if (posts > 0) {
+    if (countPosts > 0) {
       const result = await models.post.aggregate([
         {
           $group: {
