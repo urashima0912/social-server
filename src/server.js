@@ -8,7 +8,7 @@ const config = require('./config');
 const server = express();
 
 // Settings.
-server.set('PORT', process.env.PORT || 4500);
+server.set('PORT', process.env.PORT ?? 4500);
 
 // Middlewares.
 server.use(cors());
