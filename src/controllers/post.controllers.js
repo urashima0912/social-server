@@ -3,6 +3,7 @@ const values = require('../values');
 // const fs = require('fs');
 const fs = require('fs/promises');
 const path = require('path');
+const config = require('../config');
 
 const upload = async (req, res) => {
   try {
@@ -13,7 +14,7 @@ const upload = async (req, res) => {
       return res.json({ error: 'Usuario no existe' });
     }
 
-    const hostname = 'http://localhost:4500/';
+    const hostname = config.hostname;
     const file = req.file;
     const filename = hostname + values.imageFolder + '/' + file.filename;
 

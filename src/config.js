@@ -1,6 +1,7 @@
 const values = require('./values');
 
 const config = {
+  hostname: 'https://social-server-f.herokuapp.com/',
   database: {
     url: `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@cluster0.tygx3.mongodb.net/social?retryWrites=true&w=majority`,
   },

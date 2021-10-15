@@ -29,7 +29,7 @@ const signIn = async (req, res) => {
 const signUp = async (req, res) => {
   try {
     const { email, password } = req.body;
-    const hostname = 'http://localhost:4500/';
+    const hostname = config.hostname;
     const hash = await utils.bcrypt.encrypt(password);
     const file = req.file;
 
