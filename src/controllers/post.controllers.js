@@ -46,14 +46,20 @@ const stast = async (req, res) => {
     const images = await models.post.countDocuments();
     const comments = (await models.comment.find()).length;
 
-    const result = await models.post.aggregate([
-      {
-        $group: {
-          _id: '1',
-          views: { $sum: '$views' },
+    const posts = await models.post.countDocuments();
+    let views = 0;
+    if (posts > 0) {
+      const result = await models.post.aggregate([
+        {
+          $group: {
+            _id: '1',
+            views: { $sum: '$views' },
+          },
         },
-      },
-    ]);
+      ]);
+
+      views = result[0].views;
+    }
 
     let likes = 0;
     const posts = await models.post.find();
@@ -73,7 +79,7 @@ const stast = async (req, res) => {
     return res.json({
       images,
       comments,
-      views: result[0].views,
+      views,
       likes,
       // like2: like2[0].likes,
     });
@@ -96,7 +102,7 @@ const mostPopular = async (req, res) => {
 
 const details = async (req, res) => {
   try {
-    const { postId } = req.body;
+    const { postId } = req.params;
 
     const post = await models.post.findById(postId);
     const comments = await models.comment.find({ post });
