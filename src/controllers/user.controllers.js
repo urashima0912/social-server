@@ -13,14 +13,18 @@ const signIn = async (req, res) => {
       return res.json('Usuario no encontrado');
     }
 
-    const isValid = utils.bcrypt.compare(password, user.password);
+    const isValid = await utils.bcrypt.compare(password, user.password);
     if (!isValid) {
       return res.json('Usuario no encontrado');
     }
 
-    const token = jwt.sign({ user }, config.jwt.secret);
+    const data = {
+      email: user.email,
+    };
 
-    return res.json({ token });
+    const token = jwt.sign({ data }, config.jwt.secret);
+
+    return res.json({ token, avatar: user.avatar, email });
   } catch (err) {
     return res.json({ err });
   }

@@ -2,8 +2,8 @@ const values = require('./values');
 
 const config = {
   database: {
-    // url: 'mongodb://localhost/social',
-    url: `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@cluster0.a9grl.mongodb.net/social?retryWrites=true&w=majority`,
+    url: 'mongodb://localhost/social',
+    // url: `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@cluster0.a9grl.mongodb.net/social?retryWrites=true&w=majority`,
   },
   jwt: {
     secret: '613b92e493bc7362a0b7ce76',

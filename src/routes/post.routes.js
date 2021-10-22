@@ -2,12 +2,14 @@ const { Router } = require('express');
 const controllers = require('../controllers');
 const uploads = require('../utils').multer;
 const values = require('../values');
+const middlewares = require('../middlewares');
 
 const router = Router();
 
 router.post(
   '/upload',
   uploads.single(values.imageFolder),
+  middlewares.auth.isUser,
   controllers.post.upload
 );
 router.get('/recentUploads', controllers.post.recentUploads);
