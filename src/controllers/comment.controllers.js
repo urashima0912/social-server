@@ -1,7 +1,13 @@
 const models = require('../models');
 
-const lastestComments = (req, res) => {
-  return res.json('lastestComments');
+const lastestComments = async (req, res) => {
+  try {
+    const comments = await models.comment.find().sort({ createdAt: 'desc' });
+
+    return res.json({ comments });
+  } catch (err) {
+    return res.json({ msg: err.message });
+  }
 };
 
 const create = async (req, res) => {
