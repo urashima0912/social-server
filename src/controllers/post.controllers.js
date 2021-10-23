@@ -92,8 +92,6 @@ const mostPopular = async (req, res) => {
   try {
     const uploads = await models.post.find().sort({ views: 'desc' }).limit(2);
 
-    console.log({ uploads });
-
     return res.json({ uploads });
   } catch (err) {
     return res.json({ msg: err.message });
