@@ -15,7 +15,11 @@ router.post(
 router.get('/recentUploads', controllers.post.recentUploads);
 router.get('/stast', controllers.post.stast);
 router.get('/mostPopular', controllers.post.mostPopular);
-router.get('/details/:postId', controllers.post.details);
+router.get(
+  '/details/:postId',
+  middlewares.auth.detailValidation,
+  controllers.post.details
+);
 router.delete('/remove', controllers.post.remove);
 router.post('/like', controllers.post.like);
 router.post('/view', controllers.post.view);

@@ -41,6 +41,33 @@ const isUser = async (req, res, next) => {
   }
 };
 
+const detailValidation = async (req, res, next) => {
+  try {
+    const token = req.headers.token;
+    console.log({ token: token });
+    if (!token) {
+      console.log({ token2: token });
+
+      return next();
+    }
+
+    const data = jwt.verify(token, config.jwt.secret);
+    if (!data) {
+      return next();
+    }
+    const email = data.data.email;
+    const user = await models.user.findOne({ email });
+    if (!user) {
+      return next();
+    }
+    req.body.userId = user._id;
+    next();
+  } catch (err) {
+    return res.json({ err: err.message });
+  }
+};
+
 module.exports = {
   isUser,
+  detailValidation,
 };

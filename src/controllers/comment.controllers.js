@@ -26,9 +26,9 @@ const lastestComments = async (req, res) => {
 
 const create = async (req, res) => {
   try {
-    const { title, description, userId, postId } = req.body;
+    const { title, description, ownerId, postId } = req.body;
 
-    const user = await models.user.findById(userId);
+    const user = await models.user.findById(ownerId);
     if (!user) {
       return res.json({ error: 'Usuario no existe' });
     }

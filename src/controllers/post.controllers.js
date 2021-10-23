@@ -101,11 +101,27 @@ const mostPopular = async (req, res) => {
 const details = async (req, res) => {
   try {
     const { postId } = req.params;
+    const userId = req.body.userId;
+    console.log({ userId });
 
     const post = await models.post.findById(postId);
-    const comments = await models.comment.find({ post });
+    const isOwner = post.owner.toString() === userId?.toString();
+    const comments = await models.comment.find({ post }).populate('user');
+    const auxComments = [];
+    for (const comment of comments) {
+      auxComments.push({
+        _id: comment._id,
+        title: comment.title,
+        description: comment.description,
+        user: {
+          _id: comment.user._id,
+          avatar: comment.user.avatar,
+          email: comment.user.email,
+        },
+      });
+    }
 
-    return res.json({ post, comments });
+    return res.json({ post, comments: auxComments, isOwner });
   } catch (err) {
     return res.json({ msg: err.message });
   }
@@ -140,6 +156,8 @@ const remove = async (req, res) => {
 const like = async (req, res) => {
   try {
     const { postId } = req.body;
+
+    console.log({ postId });
 
     const post = await models.post.findById(postId);
     if (!post) {
